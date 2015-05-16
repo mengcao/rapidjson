@@ -34,7 +34,7 @@ TEST(Strtod, CheckApproximationCase) {
         double d;
         uint64_t u;
     }u;
-    u.u = 0x465a72e467d88 | ((static_cast<uint64_t>(-149 + kExponentBias)) << kSignificandSize);
+    u.u = 0x465a72e467d88ULL | ((static_cast<uint64_t>(-149 + kExponentBias)) << kSignificandSize);
     const double b = u.d;
     const uint64_t bInt = (u.u & kSignificandMask) | kHiddenBit;
     const int bExp = ((u.u & kExponentMask) >> kSignificandSize) - kExponentBias - kSignificandSize;

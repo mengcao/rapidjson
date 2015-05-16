@@ -159,12 +159,12 @@ void TestUnequal(const A& a, const B& b) {
 TEST(Value, EqualtoOperator) {
     Value::AllocatorType allocator;
     Value x(kObjectType);
-    x.AddMember("hello", "world", allocator)
-        .AddMember("t", Value(true).Move(), allocator)
-        .AddMember("f", Value(false).Move(), allocator)
-        .AddMember("n", Value(kNullType).Move(), allocator)
-        .AddMember("i", 123, allocator)
-        .AddMember("pi", 3.14, allocator)
+    x.AddMember(StringRef("hello"), StringRef("world"), allocator)
+        .AddMember(StringRef("t"), Value(true).Move(), allocator)
+        .AddMember(StringRef("f"), Value(false).Move(), allocator)
+        .AddMember(StringRef("n"), Value(kNullType).Move(), allocator)
+        .AddMember(StringRef("i"), 123, allocator)
+        .AddMember(StringRef("pi"), 3.14, allocator)
         .AddMember("a", Value(kArrayType).Move().PushBack(1, allocator).PushBack(2, allocator).PushBack(3, allocator), allocator);
 
     // Test templated operator==() and operator!=()
@@ -197,8 +197,8 @@ TEST(Value, EqualtoOperator) {
     EXPECT_TRUE(z.RemoveMember("t"));
     TestUnequal(x, z);
     TestEqual(y, z);
-    y.AddMember("t", false, crtAllocator);
-    z.AddMember("t", false, z.GetAllocator());
+    y.AddMember(StringRef("t"), false, crtAllocator);
+    z.AddMember(StringRef("t"), false, z.GetAllocator());
     TestUnequal(x, y);
     TestUnequal(z, x);
     y["t"] = true;
@@ -914,25 +914,25 @@ TEST(Value, Object) {
     EXPECT_EQ(0u, y.MemberCount());
 
     // AddMember()
-    x.AddMember("A", "Apple", allocator);
+    x.AddMember(StringRef("A"), StringRef("Apple"), allocator);
     EXPECT_FALSE(x.ObjectEmpty());
     EXPECT_EQ(1u, x.MemberCount());
 
     Value value("Banana", 6);
-    x.AddMember("B", "Banana", allocator);
+    x.AddMember(StringRef("B"), StringRef("Banana"), allocator);
     EXPECT_EQ(2u, x.MemberCount());
 
     // AddMember<T>(StringRefType, T, Allocator)
     {
         Value o(kObjectType);
-        o.AddMember("true", true, allocator);
-        o.AddMember("false", false, allocator);
-        o.AddMember("int", -1, allocator);
-        o.AddMember("uint", 1u, allocator);
-        o.AddMember("int64", INT64_C(-4294967296), allocator);
-        o.AddMember("uint64", UINT64_C(4294967296), allocator);
-        o.AddMember("double", 3.14, allocator);
-        o.AddMember("string", "Jelly", allocator);
+        o.AddMember(StringRef("true"), true, allocator);
+        o.AddMember(StringRef("false"), false, allocator);
+        o.AddMember(StringRef("int"), -1, allocator);
+        o.AddMember(StringRef("uint"), 1u, allocator);
+        o.AddMember(StringRef("int64"), INT64_C(-4294967296), allocator);
+        o.AddMember(StringRef("uint64"), UINT64_C(4294967296), allocator);
+        o.AddMember(StringRef("double"), 3.14, allocator);
+        o.AddMember(StringRef("string"), StringRef("Jelly"), allocator);
 
         EXPECT_TRUE(o["true"].GetBool());
         EXPECT_FALSE(o["false"].GetBool());
